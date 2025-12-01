@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: spacecatsmarket
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spacecats_db
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+feature:
+  cosmoCats:
+    enabled: true
+  kittyProducts:
+    enabled: true

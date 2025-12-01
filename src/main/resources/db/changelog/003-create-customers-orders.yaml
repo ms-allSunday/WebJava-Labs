@@ -1,0 +1,92 @@
+databaseChangeLog:
+  # 1. Sequences for Customers and Orders
+  - changeSet:
+      id: 003-create-sequences
+      author: Viktoriia Sabadash
+      changes:
+        - createSequence:
+            sequenceName: customers_seq
+            startValue: 1
+            incrementBy: 1
+        - createSequence:
+            sequenceName: orders_seq
+            startValue: 1
+            incrementBy: 1
+
+  # 2. Table: Customers
+  - changeSet:
+      id: 003-create-customers
+      author: Viktoriia Sabadash
+      changes:
+        - createTable:
+            tableName: customers
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  defaultValueSequenceNext: customers_seq
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address
+                  type: varchar(255)
+              - column:
+                  name: phone_number
+                  type: varchar(20)
+
+  # 3. Constraint: Unique Customer Email
+  - changeSet:
+      id: 003-unique-customer-email
+      author: Viktoriia Sabadash
+      changes:
+        - addUniqueConstraint:
+            tableName: customers
+            columnNames: email
+            constraintName: uq_customer_email
+
+  # 4. Table: Orders
+  - changeSet:
+      id: 003-create-orders
+      author: Viktoriia Sabadash
+      changes:
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  defaultValueSequenceNext: orders_seq
+              - column:
+                  name: order_number
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: total_price
+                  type: double
+              - column:
+                  name: order_date
+                  type: timestamp
+                  defaultValueDate: CURRENT_TIMESTAMP
+              - column:
+                  name: customer_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_order_customer
+                    references: customers(id)
+                    nullable: false
