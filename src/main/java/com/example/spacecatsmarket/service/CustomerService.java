@@ -1,8 +1,8 @@
 package com.example.spacecatsmarket.service;
 
-import com.example.spacecatsmarket.domain.Customer;
+import com.example.spacecatsmarket.dto.customer.CustomerDto;
 
 public interface CustomerService {
-    Customer getCustomerById(Long id);
-    Customer createCustomer(Customer customer);
+    CustomerDto getCustomerById(Long id);
+    CustomerDto createCustomer(CustomerDto customerDto);
 }

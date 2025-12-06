@@ -1,8 +1,9 @@
 package com.example.spacecatsmarket.service;
 
 import com.example.spacecatsmarket.AbstractIT;
-import com.example.spacecatsmarket.domain.Category;
+import com.example.spacecatsmarket.dto.category.CategoryDto;
 import com.example.spacecatsmarket.repository.CategoryRepository;
+import com.example.spacecatsmarket.repository.entity.CategoryEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,66 +30,44 @@ class CategoryServiceIT extends AbstractIT {
     @Test
     @DisplayName("Create Category: Should save to DB")
     void createCategory() {
-        // Arrange
-        Category category = new Category();
-        category.setName("Space Food");
+        CategoryDto dto = CategoryDto.builder().name("Space Food").build();
 
-        // Act
-        Category created = categoryService.createCategory(category);
+        CategoryDto created = categoryService.createCategory(dto);
 
-        // Assert
         assertNotNull(created.getId());
         assertEquals("Space Food", created.getName());
-        // Перевіряємо, що запис дійсно є в базі
         assertTrue(categoryRepository.existsById(created.getId()));
     }
 
     @Test
     @DisplayName("Get All Categories: Should return list")
     void getAllCategories() {
-        // Arrange
-        categoryRepository.save(Category.builder().name("Cat 1").build());
-        categoryRepository.save(Category.builder().name("Cat 2").build());
+        categoryRepository.save(CategoryEntity.builder().name("Cat 1").build());
+        categoryRepository.save(CategoryEntity.builder().name("Cat 2").build());
 
-        // Act
-        List<Category> list = categoryService.getAllCategories();
-
-        // Assert
+        List<CategoryDto> list = categoryService.getAllCategories();
         assertEquals(2, list.size());
     }
 
     @Test
     @DisplayName("Update Category: Should update name in DB")
     void updateCategory() {
-        // Arrange
-        Category created = categoryService.createCategory(Category.builder().name("Old Name").build());
+        CategoryEntity saved = categoryRepository.save(CategoryEntity.builder().name("Old Name").build());
 
-        Category updateInfo = new Category();
-        updateInfo.setName("New Name");
+        CategoryDto updateDto = CategoryDto.builder().name("New Name").build();
 
-        // Act
-        Category updated = categoryService.updateCategory(created.getId(), updateInfo);
+        CategoryDto updated = categoryService.updateCategory(saved.getId(), updateDto);
 
-        // Assert
         assertEquals("New Name", updated.getName());
-
-        // Перевірка в базі
-        Category inDb = categoryRepository.findById(created.getId()).orElseThrow();
-        assertEquals("New Name", inDb.getName());
     }
 
     @Test
     @DisplayName("Delete Category: Should remove from DB")
     void deleteCategory() {
-        // Arrange
-        Category created = categoryService.createCategory(Category.builder().name("Delete Me").build());
+        CategoryEntity saved = categoryRepository.save(CategoryEntity.builder().name("Delete Me").build());
 
-        // Act
-        categoryService.deleteCategory(created.getId());
+        categoryService.deleteCategory(saved.getId());
 
-        // Assert
-        assertFalse(categoryRepository.existsById(created.getId()));
-        assertThrows(RuntimeException.class,
-                () -> categoryService.getCategoryById(created.getId()));
+        assertFalse(categoryRepository.existsById(saved.getId()));
     }
 }

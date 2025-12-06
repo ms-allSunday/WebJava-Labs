@@ -1,10 +1,11 @@
 package com.example.spacecatsmarket.service.impl;
 
-import com.example.spacecatsmarket.domain.Product;
 import com.example.spacecatsmarket.dto.product.ProductDto;
 import com.example.spacecatsmarket.dto.product.ProductRequestDto;
 import com.example.spacecatsmarket.exception.ProductNotFoundException;
 import com.example.spacecatsmarket.repository.ProductRepository;
+import com.example.spacecatsmarket.repository.entity.ProductEntity;
+import com.example.spacecatsmarket.repository.projection.ProductProjection;
 import com.example.spacecatsmarket.service.ProductService;
 import com.example.spacecatsmarket.web.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public ProductDto getProductById(Long id) {
-        Product product = productRepository.findById(id)
+        ProductEntity product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
         return productMapper.toProductDto(product);
     }
@@ -37,20 +38,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductDto createProduct(ProductRequestDto requestDto) {
-        Product product = productMapper.toProductEntity(requestDto);
-        Product savedProduct = productRepository.save(product);
+        ProductEntity product = productMapper.toProductEntity(requestDto);
+        ProductEntity savedProduct = productRepository.save(product);
         return productMapper.toProductDto(savedProduct);
     }
 
     @Override
     @Transactional
     public ProductDto updateProduct(Long id, ProductRequestDto requestDto) {
-        Product existing = productRepository.findById(id)
+        ProductEntity existing = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
         productMapper.updateFromDto(requestDto, existing);
 
-        Product savedProduct = productRepository.save(existing);
+        ProductEntity savedProduct = productRepository.save(existing);
         return productMapper.toProductDto(savedProduct);
     }
 
@@ -61,5 +62,11 @@ public class ProductServiceImpl implements ProductService {
             throw new ProductNotFoundException(id);
         }
         productRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductProjection> getProductsExpensiveThan(double minPrice) {
+        return productRepository.findProductsByPriceGreaterThan(minPrice);
     }
 }

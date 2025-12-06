@@ -7,11 +7,11 @@ databaseChangeLog:
         - createSequence:
             sequenceName: categories_seq
             startValue: 1
-            incrementBy: 1
+            incrementBy: 50
         - createSequence:
             sequenceName: products_seq
             startValue: 1
-            incrementBy: 1
+            incrementBy: 50
 
   # 2. Table: Categories
   - changeSet:

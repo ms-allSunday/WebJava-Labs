@@ -2,6 +2,7 @@ package com.example.spacecatsmarket.service;
 
 import com.example.spacecatsmarket.AbstractIT;
 import com.example.spacecatsmarket.domain.Customer;
+import com.example.spacecatsmarket.dto.customer.CustomerDto;
 import com.example.spacecatsmarket.repository.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,16 +28,14 @@ class CustomerServiceIT extends AbstractIT {
     @Test
     @DisplayName("Create Customer: Should save successfully")
     void createCustomer_Success() {
-        // Arrange
-        Customer customer = Customer.builder()
+        CustomerDto dto = CustomerDto.builder()
                 .name("Major Tom")
                 .email("tom@space.com")
+                .phoneNumber("123")
                 .build();
 
-        // Act
-        Customer created = customerService.createCustomer(customer);
+        CustomerDto created = customerService.createCustomer(dto);
 
-        // Assert
         assertNotNull(created.getId());
         assertEquals("Major Tom", created.getName());
         assertTrue(customerRepository.findByEmail("tom@space.com").isPresent());
@@ -45,29 +44,24 @@ class CustomerServiceIT extends AbstractIT {
     @Test
     @DisplayName("Create Duplicate Customer: Should throw Exception")
     void createCustomer_DuplicateEmail_ShouldThrowException() {
-        // Arrange
-        // 1. Створюємо першого клієнта
-        Customer c1 = Customer.builder().name("User 1").email("duplicate@mail.com").build();
+
+        CustomerDto c1 = CustomerDto.builder().name("User 1").email("duplicate@mail.com").build();
         customerService.createCustomer(c1);
+        CustomerDto c2 = CustomerDto.builder().name("User 2").email("duplicate@mail.com").build();
 
-        // 2. Створюємо другого з таким самим email
-        Customer c2 = Customer.builder().name("User 2").email("duplicate@mail.com").build();
-
-        // Act & Assert
-        // Очікуємо RuntimeException (або твоє кастомне виключення), бо такий email вже є
         assertThrows(RuntimeException.class, () -> customerService.createCustomer(c2));
     }
 
     @Test
     @DisplayName("Get Customer By ID: Should return correct customer")
     void getCustomerById() {
-        // Arrange
-        Customer saved = customerRepository.save(Customer.builder().name("Alice").email("a@b.com").build());
+        var saved = customerRepository.save(
+                com.example.spacecatsmarket.repository.entity.CustomerEntity.builder()
+                        .name("Alice").email("alice@test.com").build()
+        );
 
-        // Act
-        Customer found = customerService.getCustomerById(saved.getId());
+        CustomerDto found = customerService.getCustomerById(saved.getId());
 
-        // Assert
         assertEquals("Alice", found.getName());
     }
 }

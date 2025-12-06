@@ -7,11 +7,11 @@ databaseChangeLog:
         - createSequence:
             sequenceName: customers_seq
             startValue: 1
-            incrementBy: 1
+            incrementBy: 50
         - createSequence:
             sequenceName: orders_seq
             startValue: 1
-            incrementBy: 1
+            incrementBy: 50
 
   # 2. Table: Customers
   - changeSet:

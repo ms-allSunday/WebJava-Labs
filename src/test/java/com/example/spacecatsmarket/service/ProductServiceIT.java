@@ -6,6 +6,7 @@ import com.example.spacecatsmarket.dto.product.ProductDto;
 import com.example.spacecatsmarket.dto.product.ProductRequestDto;
 import com.example.spacecatsmarket.exception.ProductNotFoundException;
 import com.example.spacecatsmarket.repository.ProductRepository;
+import com.example.spacecatsmarket.repository.entity.ProductEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,14 +52,14 @@ class ProductServiceIT extends AbstractIT {
     @Test
     @DisplayName("Get All: Should return products from DB")
     void getAllProducts() {
-        productRepository.save(Product.builder()
+        productRepository.save(ProductEntity.builder()
                 .name("Ball")
                 .description("Desc")
                 .price(10.0)
                 .inStock(5)
                 .build());
 
-        productRepository.save(Product.builder()
+        productRepository.save(ProductEntity.builder()
                 .name("Toy")
                 .description("Desc")
                 .price(20.0)
@@ -73,7 +74,7 @@ class ProductServiceIT extends AbstractIT {
     @Test
     @DisplayName("Update Product: Should update DB record")
     void updateProduct() {
-        Product p = productRepository.save(Product.builder()
+        ProductEntity p = productRepository.save(ProductEntity.builder()
                 .name("Old Name")
                 .description("Desc")
                 .price(10.0)
@@ -92,15 +93,16 @@ class ProductServiceIT extends AbstractIT {
         assertEquals("New Name", updated.getName());
         assertEquals(15.0, updated.getPrice());
 
-        Product inDb = productRepository.findById(p.getId()).orElseThrow();
+        ProductEntity inDb = productRepository.findById(p.getId()).orElseThrow();
         assertEquals("New Name", inDb.getName());
     }
 
     @Test
     @DisplayName("Delete Product: Should remove from DB")
     void deleteProduct() {
-        Product p = productRepository.save(Product.builder()
+        ProductEntity p = productRepository.save(ProductEntity.builder()
                 .name("To Delete")
+                .description("Desc")
                 .price(10.0)
                 .inStock(5)
                 .build());
