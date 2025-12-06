@@ -1,5 +1,6 @@
 package com.example.spacecatsmarket.service;
 
+import com.example.spacecatsmarket.AbstractIT;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         "feature.cosmoCats.enabled=true",
         "feature.kittyProducts.enabled=true"
 })
-class CosmoCatServiceEnabledTest {
+class CosmoCatServiceEnabledTest extends AbstractIT {
 
     @Autowired
     private CosmoCatService cosmoCatService;

@@ -7,8 +7,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Category {
+public class Customer {
     private Long id;
     private String name;
-    private List<Product> products;
+    private String email;
+    private String address;
+    private String phoneNumber;
+    private List<Order> orders;
 }

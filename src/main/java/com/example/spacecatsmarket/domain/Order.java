@@ -8,8 +8,11 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Order {
-    private int id;
-    private List<Product> products;
+    private Long id;
+    private UUID orderNumber;
     private double totalPrice;
+    private Customer customer;
+    private List<Product> products;
 }

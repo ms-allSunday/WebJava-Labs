@@ -2,6 +2,7 @@ package com.example.spacecatsmarket.service;
 
 import com.example.spacecatsmarket.dto.product.ProductDto;
 import com.example.spacecatsmarket.dto.product.ProductRequestDto;
+import com.example.spacecatsmarket.repository.projection.ProductProjection;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface ProductService {
     ProductDto createProduct(ProductRequestDto requestDto);
     ProductDto updateProduct(Long id, ProductRequestDto requestDto);
     void deleteProduct(Long id);
+    List<ProductProjection> getProductsExpensiveThan(double minPrice);
 }

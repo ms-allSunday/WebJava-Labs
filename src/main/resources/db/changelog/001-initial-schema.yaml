@@ -1,0 +1,76 @@
+databaseChangeLog:
+  # 1. Sequences for Categories and Products
+  - changeSet:
+      id: 001-create-sequences
+      author: Viktoriia Sabadash
+      changes:
+        - createSequence:
+            sequenceName: categories_seq
+            startValue: 1
+            incrementBy: 50
+        - createSequence:
+            sequenceName: products_seq
+            startValue: 1
+            incrementBy: 50
+
+  # 2. Table: Categories
+  - changeSet:
+      id: 001-create-categories
+      author: Viktoriia Sabadash
+      changes:
+        - createTable:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  defaultValueSequenceNext: categories_seq
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  # 3. Table: Products
+  - changeSet:
+      id: 001-create-products
+      author: Viktoriia Sabadash
+      changes:
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  defaultValueSequenceNext: products_seq
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(500)
+              - column:
+                  name: price
+                  type: double
+                  constraints:
+                    nullable: false
+              - column:
+                  name: in_stock
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_product_category
+                    references: categories(id)
+                    nullable: true

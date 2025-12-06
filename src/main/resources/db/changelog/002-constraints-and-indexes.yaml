@@ -1,0 +1,24 @@
+databaseChangeLog:
+  # Constraint: Unique Product Name per Category
+  - changeSet:
+      id: 002-unique-product-per-category
+      author: Viktoriia Sabadash
+      changes:
+        - addUniqueConstraint:
+            tableName: products
+            columnNames: name, category_id
+            constraintName: uq_product_name_category
+      comment: "Product name must be unique within a specific category"
+
+  # Index: Search Products by Name faster
+  - changeSet:
+      id: 002-index-product-name
+      author: Viktoriia Sabadash
+      changes:
+        - createIndex:
+            tableName: products
+            indexName: idx_product_name
+            columns:
+              - column:
+                  name: name
+      comment: "Index for faster search by product name"

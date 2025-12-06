@@ -1,5 +1,6 @@
 package com.example.spacecatsmarket.service;
 
+import com.example.spacecatsmarket.AbstractIT;
 import com.example.spacecatsmarket.exception.FeatureNotAvailableException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
         "feature.cosmoCats.enabled=false",
         "feature.kittyProducts.enabled=false"
 })
-class CosmoCatServiceDisabledTest {
+class CosmoCatServiceDisabledTest extends AbstractIT {
 
     @Autowired
     private CosmoCatService cosmoCatService;
