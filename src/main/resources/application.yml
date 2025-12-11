@@ -15,9 +15,29 @@ spring:
         format_sql: true
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8083/.well-known/jwks.json
+      client:
+        registration:
+          github:
+            clientId: Ov23liMla86ZwhyRT0XF
+            clientSecret: 8a1e6b6c0853633861119bd00d66fe0c434f49c1
+            scope: read:user
 
 feature:
   cosmoCats:
     enabled: true
   kittyProducts:
     enabled: true
+
+application:
+  security:
+    api-key-header: X-Api-Key
+    keys:
+      - value: ${API_KEY_USER:user-secret-local}
+        role: ROLE_USER
+      - value: ${API_KEY_ADMIN:admin-secret-local}
+        role: ROLE_ADMIN

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-    
+
     ProductDto toProductDto(ProductEntity productEntity);
 
     @Mapping(target = "id", ignore = true)
